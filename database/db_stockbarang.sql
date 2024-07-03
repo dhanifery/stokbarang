@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 01, 2024 at 10:28 AM
+-- Generation Time: Jul 03, 2024 at 07:38 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.3.27
 
@@ -40,7 +40,8 @@ CREATE TABLE `barang_keluar` (
 --
 
 INSERT INTO `barang_keluar` (`id_keluar`, `id_barang`, `tanggal`, `penerima`, `qty`) VALUES
-(13, 24, '2024-07-01 07:17:51', 'Fulan', 10);
+(16, 19, '2024-07-03 05:33:26', 'udin', 150),
+(18, 19, '2024-07-03 05:37:23', 'feri', 100);
 
 -- --------------------------------------------------------
 
@@ -61,7 +62,8 @@ CREATE TABLE `barang_masuk` (
 --
 
 INSERT INTO `barang_masuk` (`id_masuk`, `id_barang`, `tanggal`, `keterangan`, `qty`) VALUES
-(31, 24, '2024-07-01 07:13:25', 'Masuk kemarin ', 50);
+(43, 24, '2024-07-03 04:42:24', 'smartphone', 150),
+(48, 19, '2024-07-03 05:36:57', 'smartphone', 100);
 
 -- --------------------------------------------------------
 
@@ -101,8 +103,53 @@ CREATE TABLE `stock` (
 
 INSERT INTO `stock` (`id_barang`, `nama_barang`, `deskripsi`, `stock`) VALUES
 (19, 'Iphone 11', 'Smartphone', 100),
-(23, 'samsung', 'Smartphone', 100),
-(24, 'LAPTOP ASUS', 'LAPTOP', 140);
+(24, 'LAPTOP ASUS', 'LAPTOP', 342);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trans_barang_keluar`
+--
+
+CREATE TABLE `trans_barang_keluar` (
+  `id_trans` int(11) NOT NULL,
+  `kode_trans` varchar(50) NOT NULL,
+  `tanggal` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `id_barang` int(11) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `status` varchar(25) NOT NULL DEFAULT 'Barang Keluar'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `trans_barang_keluar`
+--
+
+INSERT INTO `trans_barang_keluar` (`id_trans`, `kode_trans`, `tanggal`, `id_barang`, `qty`, `status`) VALUES
+(1, '20240703VDBET', '2024-07-03 05:33:26', 19, 150, 'Barang Keluar'),
+(3, '20240703DBGNX', '2024-07-03 05:37:23', 19, 100, 'Barang Keluar');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trans_barang_masuk`
+--
+
+CREATE TABLE `trans_barang_masuk` (
+  `id_trans` int(11) NOT NULL,
+  `kode_trans` varchar(50) NOT NULL,
+  `tanggal` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `id_barang` int(11) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `status` varchar(25) NOT NULL DEFAULT 'Barang Masuk'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `trans_barang_masuk`
+--
+
+INSERT INTO `trans_barang_masuk` (`id_trans`, `kode_trans`, `tanggal`, `id_barang`, `qty`, `status`) VALUES
+(6, '20240703EUMLC', '2024-07-03 04:42:44', 19, 150, 'Barang Masuk'),
+(10, '20240703RMONI', '2024-07-03 05:36:57', 19, 100, 'Barang Masuk');
 
 --
 -- Indexes for dumped tables
@@ -133,6 +180,18 @@ ALTER TABLE `stock`
   ADD PRIMARY KEY (`id_barang`);
 
 --
+-- Indexes for table `trans_barang_keluar`
+--
+ALTER TABLE `trans_barang_keluar`
+  ADD PRIMARY KEY (`id_trans`);
+
+--
+-- Indexes for table `trans_barang_masuk`
+--
+ALTER TABLE `trans_barang_masuk`
+  ADD PRIMARY KEY (`id_trans`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -140,13 +199,13 @@ ALTER TABLE `stock`
 -- AUTO_INCREMENT for table `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id_keluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_keluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id_masuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_masuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `login`
@@ -158,7 +217,19 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `trans_barang_keluar`
+--
+ALTER TABLE `trans_barang_keluar`
+  MODIFY `id_trans` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `trans_barang_masuk`
+--
+ALTER TABLE `trans_barang_masuk`
+  MODIFY `id_trans` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

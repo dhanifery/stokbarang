@@ -7,7 +7,7 @@ require 'cek.php';
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>SI- Barang Masuk</title>
+	<title>Barang Masuk</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<link rel="icon" href="assets/img/icon.ico" type="image/x-icon"/>
 
@@ -61,7 +61,7 @@ require 'cek.php';
 						<li class="nav-item dropdown hidden-caret">
 							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
 								<div class="avatar-sm">
-									<img src="assets\img\User-Profile-PNG-High-Quality-Image.png" alt="..." class="avatar-img rounded-circle">
+									<img src="assets\img\profil.jpeg" alt="..." class="avatar-img rounded-circle">
 								</div>
 							</a>
 							<ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -82,9 +82,9 @@ require 'cek.php';
 		<div class="sidebar sidebar-style-2">			
 			<div class="sidebar-wrapper scrollbar scrollbar-inner">
 				<div class="sidebar-content">
-					<ul class="nav nav-primary">
+				<ul class="nav nav-primary">
 						<li class="nav-item">
-							<a href="Index.php" class="collapsed" aria-expanded="false">
+							<a href="Index.php">
 								<i class="fas fa-home"></i>
 								<p>Dashboard</p>
 							</a>
@@ -96,21 +96,39 @@ require 'cek.php';
 							<h4 class="text-section">Main Data</h4>
 						</li>
 						<li class="nav-item">
-							<a href="stock_barang.php">
+							<a href="Stock_barang.php">
 								<i class="fas fa-layer-group"></i>
 								<p>Stock Barang</p>
 							</a>
 						</li>
 						<li class="nav-item active">
-							<a href="barang_masuk.php">
+							<a href="Barang_masuk.php">
 								<i class="fas fa-th-list"></i>
 								<p>Stock Barang Masuk</p>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a  href="barang_keluar.php">
-								<i class="fas fa-pen-square"></i>
+							<a href="Barang_keluar.php">
+								<i class="fas fa-th-list"></i>
 								<p>Stock Barang Keluar</p>
+							</a>
+						</li>
+                        <li class="nav-section">
+							<span class="sidebar-mini-icon">
+								<i class="fa fa-ellipsis-h"></i>
+							</span>
+							<h4 class="text-section">Transaksi</h4>
+						</li>
+						<li class="nav-item">
+							<a href="transaksi_barang_masuk.php">
+								<i class="fas fa-table"></i>
+								<p>Transaksi Barang Masuk</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="transaksi_barang_keluar.php">
+								<i class="fas fa-table"></i>
+								<p>Transaksi Barang Keluar</p>
 							</a>
 						</li>
 					</ul>
@@ -126,7 +144,7 @@ require 'cek.php';
 						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
 							<div>
 								<h2 class="text-white pb-2 fw-bold">Stock Barang Masuk</h2>
-								<h5 class="text-white op-7 mb-2">Sistem Informasi - Stock Barang</h5>
+								<h5 class="text-white op-7 mb-2">Stock Barang</h5>
 							</div>
 						</div>
 					</div>
@@ -176,9 +194,16 @@ require 'cek.php';
                                                                     </select>
 																</div>
 															</div>
+															<?php
+															$characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+															$randomString = substr(str_shuffle($characters), 0, 5);
+															$kode_trans = date('Ymd').$randomString;
+															
+															?>
 															<div class="col-sm-12">
 																<div class="form-group form-group-default">
 																	<label  class="fw-bold">Keterangan</label>
+																	<input type="text" hidden name="kode_trans" value="<?= $kode_trans;?>">
 																	<input name="keterangan" type="text" class="form-control" placeholder="Masukkan keterangan..." require_once>
 																</div>
 															</div>
@@ -213,7 +238,7 @@ require 'cek.php';
 											<tbody>
                                             <?php
                                                 // $i = 1;
-                                                $get_all_data = mysqli_query($conn, "select * from barang_masuk m, stock s where s.id_barang = m.id_barang ");
+												$get_all_data = mysqli_query($conn, "select * from barang_masuk m, stock s where s.id_barang = m.id_barang ");
                                                 while($data = mysqli_fetch_array($get_all_data)){
                                                         $nama_barang = $data['nama_barang'];
                                                         $tanggal = $data['tanggal'];

@@ -7,7 +7,7 @@ require 'cek.php';
 <html lang="en">
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>Dashboard</title>
+	<title>Transaksi Barang Keluar</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<link rel="icon" href="assets/img/icon.ico" type="image/x-icon"/>
 
@@ -82,9 +82,9 @@ require 'cek.php';
 		<div class="sidebar sidebar-style-2">			
 			<div class="sidebar-wrapper scrollbar scrollbar-inner">
 				<div class="sidebar-content">
-				<ul class="nav nav-primary">
-						<li class="nav-item active">
-							<a href="Index.php">
+					<ul class="nav nav-primary">
+						<li class="nav-item">
+							<a href="index.php">
 								<i class="fas fa-home"></i>
 								<p>Dashboard</p>
 							</a>
@@ -125,7 +125,7 @@ require 'cek.php';
 								<p>Transaksi Barang Masuk</p>
 							</a>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item active">
 							<a href="transaksi_barang_keluar.php">
 								<i class="fas fa-table"></i>
 								<p>Transaksi Barang Keluar</p>
@@ -143,7 +143,7 @@ require 'cek.php';
 					<div class="page-inner py-5">
 						<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
 							<div>
-								<h2 class="text-white pb-2 fw-bold">Dashboard</h2>
+								<h2 class="text-white pb-2 fw-bold">Transaksi Barang Keluar</h2>
 								<h5 class="text-white op-7 mb-2">Stock Barang</h5>
 							</div>
 						</div>
@@ -212,27 +212,73 @@ require 'cek.php';
 											<thead>
 												<tr>
 													<th>No</th>
+													<th>Kode Transaksi</th>
+													<th>Tanggal</th>
 													<th>Nama Barang</th>
-													<th>Deskripsi</th>
-													<th>Stock</th>
+													<th>Quantity</th>
+													<th>Status</th>
+                                                    <th style="width: 10%">Action</th>
 												</tr>
 											</thead>
 											<tbody>
                                             <?php
                                                 $i = 1;
-												// $kode_jadwal = date('Ymd').$randomString;
-                                                $get_all_data = mysqli_query($conn, "select * from stock order by nama_barang asc");
+                                                $get_all_data = mysqli_query($conn, "select * from trans_barang_keluar k, stock s where s.id_barang = k.id_barang ");
                                                 while($data = mysqli_fetch_array($get_all_data)){
+                                                        $id_trans = $data['id_trans'];
+                                                        $kode_trans = $data['kode_trans'];
+                                                        $tanggal = $data['tanggal'];
                                                         $nama_barang = $data['nama_barang'];
-                                                        $deskripsi = $data['deskripsi'];
-                                                        $stock = $data['stock'];
+                                                        $qty = $data['qty'];
+                                                        $status = $data['status'];
                                                     ?>
                                                     <tr>
                                                         <td><?= $i++;?></td>
+                                                        <td><?= $kode_trans;?></td>
+                                                        <td><?= $tanggal;?></td>
                                                         <td><?= $nama_barang;?></td>
-                                                        <td><?= $deskripsi;?></td>
-                                                        <td><?= $stock;?></td>
+                                                        <td><?= $qty;?></td>
+                                                        <td class="fw-bold"><?= $status;?></td>
+														<td>
+                                                            <div class="form-button-action">
+                                                                <input type="hidden" name="id_trans" value="<?= $id_trans;?>">
+                                                                <button type="button" data-toggle="modal" data-target="#delete<?= $id_trans;?>" class="btn btn-link btn-danger">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
                                                     </tr>
+													<!-- Modal delete -->
+                                                    <div class="modal fade" id="delete<?= $id_trans;?>">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header no-bd">
+                                                                    <h5 class="modal-title">
+                                                                        <span class="fw-bold">Konfirmasi Hapus</span> 
+                                                                    </h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form method="post">
+																		<input type="hidden" name="id_trans" value="<?= $id_trans;?>">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12">
+                                                                                <div class="form-group">
+                                                                                    <h3 class="fw-light">Apakah anda yakin menghapus, <span class="fw-bold"><?= $kode_trans;?></span>?</h3>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer no-bd">
+                                                                        <button type="submit" name="hapus_trans_keluar" id="addRowButton" class="btn btn-primary">Hapus</button>
+                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 <?php
                                                 };?>
 											</tbody>

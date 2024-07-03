@@ -5,6 +5,7 @@ session_start();
 $conn = mysqli_connect("localhost", "root", "", "db_stockbarang");
 
 
+
 // TAMBAH DATA BARANG
 if (isset($_POST['add_barang'])) {
     $nama_barang = $_POST['nama_barang'];
@@ -55,6 +56,7 @@ if (isset($_POST['hapus_barang'])) {
 // TAMBAH DATA BARANG MASUK
 if (isset($_POST['add_barang_masuk'])) {
     $id_barang = $_POST['id_barang'];
+    $kode_trans = $_POST['kode_trans'];
     $keterangan = $_POST['keterangan'];
     $qty = $_POST['qty'];
 
@@ -65,9 +67,10 @@ if (isset($_POST['add_barang_masuk'])) {
     $new_stock_qty = $new_stock + $qty;
 
     $insert_data = mysqli_query($conn,"insert into barang_masuk (id_barang, keterangan, qty) values('$id_barang','$keterangan' ,'$qty')");
+    $insert_data_trans = mysqli_query($conn, "insert into trans_barang_masuk (kode_trans, id_barang, qty) values('$kode_trans','$id_barang','$qty')");
     $update_stock_masuk = mysqli_query($conn,"update stock set stock='$new_stock_qty' where id_barang='$id_barang'");
 
-    if($insert_data && $update_stock_masuk){
+    if($insert_data && $update_stock_masuk && $insert_data_trans){
         header('location:barang_masuk.php');
     }else{
         echo 'gagal';
@@ -119,6 +122,32 @@ if (isset($_POST['update_barang_masuk'])) {
     }
 }
 
+// HAPUS DATA TRANSAKSI BARANG MASUK
+if (isset($_POST['hapus_trans_masuk'])) {
+    $id_trans= $_POST['id_trans'];
+    
+    $hapus = mysqli_query($conn, "delete from trans_barang_masuk where id_trans='$id_trans'");
+
+    if ($hapus) {
+        header('location:transaksi_barang_masuk.php');
+    }else{
+        header('location:transaksi_barang_masuk.php');
+    }
+}
+
+// HAPUS DATA TRANSAKSI BARANG KELUAR
+if (isset($_POST['hapus_trans_keluar'])) {
+    $id_trans= $_POST['id_trans'];
+    
+    $hapus = mysqli_query($conn, "delete from trans_barang_keluar where id_trans='$id_trans'");
+
+    if ($hapus) {
+        header('location:transaksi_barang_keluar.php');
+    }else{
+        header('location:transaksi_barang_keluar.php');
+    }
+}
+
 
 // HAPUS DATA STOCK BARANG MASUK
 if (isset($_POST['hapus_barang_masuk'])) {
@@ -138,6 +167,7 @@ if (isset($_POST['hapus_barang_masuk'])) {
 // TAMBAH DATA BARANG KELUAR
 if (isset($_POST['add_barang_keluar'])) {
     $id_barang = $_POST['id_barang'];
+    $kode_trans = $_POST['kode_trans'];
     $penerima = $_POST['penerima'];
     $qty = $_POST['qty'];
 
@@ -148,9 +178,10 @@ if (isset($_POST['add_barang_keluar'])) {
     $new_stock_qty = $new_stock - $qty;
 
     $insert_data = mysqli_query($conn,"insert into barang_keluar (id_barang, penerima, qty) values('$id_barang','$penerima' ,'$qty')");
+    $insert_data_trans = mysqli_query($conn, "insert into trans_barang_keluar (kode_trans, id_barang, qty) values('$kode_trans','$id_barang','$qty')");
     $update_stock_keluar = mysqli_query($conn,"update stock set stock='$new_stock_qty' where id_barang='$id_barang'");
 
-    if($insert_data && $update_stock_keluar){
+    if($insert_data && $update_stock_keluar && $insert_data_trans){
         header('location:barang_keluar.php');
     }else{
         echo 'gagal';
